@@ -1,0 +1,104 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+<div>
+    <h5 style="margin-left:10px">Лікарі</h5>
+    <table>
+        <tbody>
+        <td>
+        <td>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Прізвище</th>
+                        <th>Спеціалізація</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var item in Model.Doctors)
+                        {
+                            <tr>
+                                <td>@item.Surname</td>
+                                <td>@item.Specialization</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        <td>
+            <div style="margin-left: 10px">
+                Вивести кількість різних діагнозів, які поставили лікарі із заданою спеціалізацією<br>
+                Спеціалізація:
+                <table>
+
+                    @using (Html.BeginForm("Task1", "Home", FormMethod.Get))
+                    {
+                        <form action="Task1" method="post">
+                        <td><select name="specialization" class="form-control" style="width:240px" asp-items="new SelectList(Model.DoctorsSpecializations)"></select></td>
+                        <td><input type="submit" value="Submit" style="width: 70px; height: 34px; margin-left: 8px" /></td>
+                        </form>
+                    }
+
+
+                </table>
+
+
+                Вивести прізвища лікарів із найбільшою кількістю невиписаних пацієнтів у заданому відділенні.<br>
+                Відділення:
+                <table>
+                    @using (Html.BeginForm("Task2", "Home", FormMethod.Get))
+                    {
+                        <form action="Task2" method="post">
+                        <td><select name="requiredDepartamentNumber" class="form-control" style="width:89px" asp-items="new SelectList(Model.DepartamentNumbers)"></select></td>
+                        <td> <input type="submit" value="Submit" style="width: 70px; height: 34px; margin-left: 8px"></input></td>
+                        </form>
+                    }
+                </table>
+
+            </div>
+        </td>
+        </td>
+        </tr>
+
+    </table>
+    <table>
+        <h5 style="margin-left: 10px; margin-top: 12px">Пацієнти</h5>
+        <table border="1" style="margin-top:12px">
+
+            <thead>
+                <tr>
+                    <th>Прізвище</th>
+                    <th>Діагноз</th>
+                    <th>Лікар</th>
+                    <th>Відділення</th>
+                    <th>Дата народження</th>
+                    <th>Дата виписки</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var item in Model.Patients)
+                    {
+                        <tr>
+                            <td>@item.Surname</td>
+                            <td>@item.Diagnosis</td>
+                            <td>@item.DoctorsSurname</td>
+                            @if (@item.DepartamentNumber != -1) { <td>@item.DepartamentNumber</td> }
+                            else { <td>Invalid data</td> }
+                            @if (@item.BirthDate!=null) {<td>@item.BirthDate.ToString("dd'.'MM'.'yyyy")</td> } 
+                            else { <td>Invalid data</td> }
+                            @if (@item.DischargeDate != null)
+                            { <td>@item.DischargeDate.ToString("dd'.'MM'.'yyyy")</td> }
+                            else { <td> </td> }
+                            
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+</div>
